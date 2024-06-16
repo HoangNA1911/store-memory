@@ -1,0 +1,22 @@
+{% extends 'layouts/a.html' %}
+{% block content %}
+{% if user.is_authenticated %}
+    <h1>Welcome, {{ user.username }}</h1>
+    {% comment %} <img src="{{ user.socialaccount_set.first().get_avatar_url }}" alt="{{ user.username }}"> {% endcomment %}
+    <h2>Your Memories</h2>
+    {% if memories %}
+        <ul>
+        {% for memory in memories %}
+            <li>{{ memory.place_name }}: {{ memory.comments }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>You have no memories.</p>
+    {% endif %}
+    {% comment %} <a href="{% url 'add_memory' %}" hx-get="{% url 'add_memory' %}" hx-trigger="click" hx-target="#memory-form">Add a Memory</a> {% endcomment %}
+    <div id="memory-form"></div>
+    <a href="{% url 'account_logout' %}">Logout</a>
+{% else %}
+    <a href="{% url 'account_login' %}">Login with Google</a>
+{% endif %}
+{% endblock %} 
