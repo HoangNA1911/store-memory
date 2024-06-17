@@ -239,6 +239,62 @@
         #profile article p {
             @apply truncate leading-normal;
         }
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columns with equal width */
+            gap: 20px; /* Gap between grid items */
+            list-style-type: none; /* Remove list styling */
+            padding: 0; /* Remove default padding */
+        }
+        .memory-item {
+            /* Styles for each memory item */
+            position: relative; /* Ensure relative positioning for absolute overlay */
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            overflow: hidden; /* Ensure overflow is hidden for overlay */
+            user-select: none; /* Prevent text selection */
+        }
+        .memory-item:hover::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.25); /* Semi-transparent black overlay */
+            opacity: 1; /* Initially transparent */
+            transition: opacity 0.3s ease-in-out; /* Smooth transition for opacity */
+        }
+        .memory-content {
+            position: relative;
+            z-index: 1; /* Ensure content appears above overlay */
+        }
+
+        {% comment %} .step-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .step-links a {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 0 5px;
+            text-decoration: none;
+            background-color: #007bff;
+            color: #fff;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .step-links a:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .step-links .current {
+            font-weight: bold;
+            color: #007bff;
+        } {% endcomment %}
     </style>
 </head>
 {% block layout %}

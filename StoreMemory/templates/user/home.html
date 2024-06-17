@@ -1,22 +1,44 @@
-{% extends 'layouts/a.html' %}
+{% extends 'layouts/photo_layout.html' %}
 {% block content %}
 {% if user.is_authenticated %}
-    <h1>Welcome, {{ user.username }}</h1>
+    <div style="display: inline-block;">
+        <h1>Welcome, {{ user.username }}</h1>
+    </div>
+    <div style="display: inline-block;">
+        <a href="{% url 'account_logout' %}">Add memory</a>
+    </div>
     {% comment %} <img src="{{ user.socialaccount_set.first().get_avatar_url }}" alt="{{ user.username }}"> {% endcomment %}
     <h2>Your Memories</h2>
-    {% if memories %}
-        <ul>
+    <ul class="memory-grid">
         {% for memory in memories %}
-            <li>{{ memory.place_name }}: {{ memory.comments }}</li>
+            <li class="memory-item">
+                <h3>{{ memory.title }}</h3>
+                <p>{{ memory.created_at }}</p>
+                <!-- Add other fields as needed -->
+            </li>
         {% endfor %}
-        </ul>
-    {% else %}
-        <p>You have no memories.</p>
-    {% endif %}
-    {% comment %} <a href="{% url 'add_memory' %}" hx-get="{% url 'add_memory' %}" hx-trigger="click" hx-target="#memory-form">Add a Memory</a> {% endcomment %}
-    <div id="memory-form"></div>
-    <a href="{% url 'account_logout' %}">Logout</a>
-{% else %}
-    <a href="{% url 'account_login' %}">Login with Google</a>
+    </ul>
+
+    <div class="pagination">
+        <span class="step-links">
+            <span class="current">
+                Page {{ memories.number }} of {{ memories.paginator.num_pages }}.
+            </span>
+
+            {% if memories.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ memories.previous_page_number }}">previous</a>
+            {% endif %}
+
+
+            {% if memories.has_next %}
+                <a href="?page={{ memories.next_page_number }}">next</a>
+                <a href="?page={{ memories.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+    
+
 {% endif %}
 {% endblock %} 

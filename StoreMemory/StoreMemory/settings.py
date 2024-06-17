@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'explorer',
 ]
 
 MIDDLEWARE = [
@@ -156,3 +157,11 @@ ACCOUNT_EMAIL_REQUIRED = True
 
 # LOGIN_REDIRECT_URL='login/'
 ACCOUNT_LOGOUT_REDIRECT_URL="/accounts/profile/"
+
+
+
+EXPLORER_CONNECTIONS = {
+    'Default': 'default',  # Map your database connection alias to a name
+}
+
+EXPLORER_DEFAULT_CONNECTION = 'default'  # Specify the default connection alias
