@@ -1,0 +1,132 @@
+
+{% extends 'layouts/photo_layout.html' %}
+{%block content%}
+<div class="container">
+    <h2>Memory Details</h2>
+    <form id="memoryForm">
+      <div class="form-group">
+          <label for="title">Memory Title</label>
+          <input type="text" id="title" name="title" value="{{ memory.title }}" required>
+      </div>
+      <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" name="description"  required>{{ memory.description }}</textarea>
+      </div>
+      <div class="form-group">
+          <label for="date">Date</label>
+          <input type="text" id="date" name="date" value= "{{ memory.created_at }}" disabled required>
+      </div>
+      <div class="form-group">
+          <label for="longitude">Location (Click to map to update location)</label>
+          <div id="map"></div>
+          <div id="location" style="display: flex">
+              <div class="location-item" style="margin-right: 10px">
+                  <label for="longitude">Longitude
+                  </label>
+                  <input type="text" id="longitude" name="longitude" value="{{ memory.longitude }}" disabled required>
+              </div>
+              <div class="location-item" style="margin-left: 10px">
+                  <label for="latitude">Latitude</label>
+                  <input type="text" id="latitude" name="latitude" value="{{ memory.latitude }}" disabled required> 
+              </div>
+          </div>
+
+      </div>
+      <div class="buttons" style = "display: flex ; justify-content: center" >
+        <button type="submit" style = "margin-right:15px ">Update Memory</button>
+        <button type="button" class="delete" id="deleteButton"style = "margin-left:5px ">Delete Memory
+        </button>
+      </div>
+  </form>
+</div>
+<script>
+    document.getElementById('memoryForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+    
+        const formData = {
+          title: document.getElementById('title').value,
+          description: document.getElementById('description').value,
+          longitude: parseFloat(document.getElementById('longitude').value),
+          latitude: parseFloat(document.getElementById('latitude').value)
+        };
+    
+        fetch('{% url "edit-memory" memory.pk %}', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.message) {
+            window.location.href = '/accounts/profile';
+            alert('Update memory successfully');
+          } else {
+            alert('Failed to update memory. Please try again.');
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          alert('Failed to update memory. Please try again.');
+        });
+      });
+
+
+
+      document.getElementById('deleteButton').addEventListener('click', function() {
+        if (confirm('Are you sure you want to delete this memory?')) {
+          fetch('{% url "delete-memory" memory.pk %}', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': '{{ csrf_token }}'
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.message) {
+              // Redirect to profile page on success
+              window.location.href = '/accounts/profile';
+            } else {
+              alert('Failed to delete memory. Please try again.');
+            }
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+            alert('Failed to delete memory. Please try again.');
+          });
+        }
+      });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol.js"></script>
+  <script>
+      // Initialize the map
+      var map = new ol.Map({
+          target: 'map',
+          layers: [
+              new ol.layer.Tile({
+                  source: new ol.source.OSM()
+              })
+          ],
+          view: new ol.View({
+              center: ol.proj.fromLonLat([-74.0060, 40.7128]),// fixing by map can't load
+              zoom: 13
+          })
+      });
+      map.on('click', function(event) {
+        var coordinate = event.coordinate;
+        var coordinateValue = ol.proj.toLonLat(coordinate);
+        var lng = coordinateValue[0];
+        var lat = coordinateValue[1];
+        var latInput = document.getElementById('latitude')
+        var lngInput = document.getElementById('longitude')
+        latInput.value = lat
+        lngInput.value = lng
+        // Here you can use the coordinates as needed
+        console.log('longitude:', lng, 'latitude:', lat);
+    });
+  </script>
+
+  {%endblock%}

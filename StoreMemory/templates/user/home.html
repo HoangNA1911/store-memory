@@ -1,44 +1,87 @@
 {% extends 'layouts/photo_layout.html' %}
 {% block content %}
 {% if user.is_authenticated %}
-    <div style="display: inline-block;">
-        <h1>Welcome, {{ user.username }}</h1>
+    <style>
+        .button-nav {
+            border: 1px solid;
+            padding: 0 10px;
+            border-radius: 5px;
+            background: #ddd;
+        }
+    </style>
+    <div style="display: flex; width: 100%; justify-content: space-between; margin: 10px 10px;">
+        <div style="display: inline-block;">
+            <h1>Welcome, {{ user.username }}</h1>
+        </div>
+        <div style="display: inline-block;" >
+            <a href="{% url 'add-memory' %}" class ="add-memory">Add memory</a>
+        </div>
     </div>
-    <div style="display: inline-block;">
-        <a href="{% url 'account_logout' %}">Add memory</a>
-    </div>
-    {% comment %} <img src="{{ user.socialaccount_set.first().get_avatar_url }}" alt="{{ user.username }}"> {% endcomment %}
-    <h2>Your Memories</h2>
-    <ul class="memory-grid">
-        {% for memory in memories %}
-            <li class="memory-item">
-                <h3>{{ memory.title }}</h3>
-                <p>{{ memory.created_at }}</p>
-                <!-- Add other fields as needed -->
-            </li>
-        {% endfor %}
-    </ul>
+    
+    {%if memories%}
+        <ul class="memory-grid">
+            {% for memory in memories %}
+            <a class="card-item" href="{% url 'memory-detail' pk=memory.pk %}">
+                <li class="memory-item">
+                        <h2>{{ memory.title }}</h3>
+                        <h3>{{ memory.created_at }}</p>
+                    <!-- Add other fields as needed -->
+                </li>
+            </a>
 
-    <div class="pagination">
-        <span class="step-links">
-            <span class="current">
-                Page {{ memories.number }} of {{ memories.paginator.num_pages }}.
+            {% endfor %}
+        </ul>
+        <div class="pagination">
+            <span class="step-links">
+                <span class="current">
+                    Page {{ memories.number }} of {{ memories.paginator.num_pages }}.
+                </span>
+
+                {% if memories.has_previous %}
+                    <a href="?page=1"class = "button-nav">&laquo; first</a>
+                    <a href="?page={{ memories.previous_page_number }}" class = "button-nav">previous</a>
+                {% endif %}
+
+
+                {% if memories.has_next %}
+                    <a href="?page={{ memories.next_page_number }}" class = "button-nav">next</a>
+                    <a href="?page={{ memories.paginator.num_pages }} "class = "button-nav">last &raquo;</a>
+                {% endif %}
             </span>
-
-            {% if memories.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ memories.previous_page_number }}">previous</a>
-            {% endif %}
-
-
-            {% if memories.has_next %}
-                <a href="?page={{ memories.next_page_number }}">next</a>
-                <a href="?page={{ memories.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </span>
-    </div>
+        </div>
+    {%else%}
+        <h3>You don't have any memory</h3>
+    {%endif%}
 
     
 
+    
+    <script>
+        var imageUrls = [
+        'https://img.freepik.com/free-vector/flat-design-mountain-landscape_23-2149161403.jpg',
+        'https://static.vecteezy.com/system/resources/thumbnails/007/162/558/small/beautiful-blue-mountain-silhouette-landscape-with-fog-and-sunrise-and-sunset-in-mountains-background-outdoor-and-hiking-concept-good-for-wallpaper-site-banner-cover-poster-free-vector.jpg',
+        'https://static.vecteezy.com/system/resources/previews/007/984/440/non_2x/beautiful-river-panoramic-landscape-background-illustration-vector.jpg',
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnXo_aDcLRu9p_0djFa6vVJGcpaJHKd-VqzoKUBc9rxnDCmgpu3Pfd5ly_70BsIiGGo6w&usqp=CAU',
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8FoCRbgcs48Rb5-QzumDboX8ECWmuVUQWiEbJoemRM5dGPMaWqtXLYJwCCfgop3qJNGs&usqp=CAU'
+    ];
+
+    // Function to shuffle array elements (Fisher-Yates shuffle algorithm)
+    function shuffleArray(array) {
+        for (var i = array.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // Shuffle the imageUrls array to randomize the images
+    shuffleArray(imageUrls);
+
+    // Select all elements with class "card-img" and assign image URLs
+    var cardImages = document.querySelectorAll('.memory-item');
+    for (var i = 0; i < cardImages.length; i++) {
+        cardImages[i].style.backgroundImage = 'url(' + imageUrls[i] + ')';
+    }
+    </script>
 {% endif %}
 {% endblock %} 

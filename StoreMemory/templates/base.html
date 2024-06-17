@@ -17,6 +17,11 @@
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style type="text/tailwindcss">
+        content {
+            display: flex;
+            align-item: center;
+            justify-content: center;
+        }
         [x-cloak] { 
             display: none !important; 
         }
@@ -241,7 +246,7 @@
         }
         .memory-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 columns with equal width */
+            grid-template-columns: repeat(3, minmax(300px, 1fr)); /* 3 columns with equal width */
             gap: 20px; /* Gap between grid items */
             list-style-type: none; /* Remove list styling */
             padding: 0; /* Remove default padding */
@@ -252,8 +257,17 @@
             border: 1px solid #ccc;
             padding: 10px;
             text-align: center;
+            height: 200px;
             overflow: hidden; /* Ensure overflow is hidden for overlay */
             user-select: none; /* Prevent text selection */
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .memory-item a {
+            display: block; /* Ensure the <a> tag fills the .memory-item */
+            color: inherit; /* Inherit text color */
+            text-decoration: none; /* Remove underline */
         }
         .memory-item:hover::after {
             content: '';
@@ -263,14 +277,80 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.25); /* Semi-transparent black overlay */
-            opacity: 1; /* Initially transparent */
+            opacity: 0; /* Initially transparent */
             transition: opacity 0.3s ease-in-out; /* Smooth transition for opacity */
+        }
+        
+        .memory-item:hover a {
+            z-index: 2; /* Ensure links are on top of overlay */
+        }
+        
+        .memory-item:hover::after {
+            opacity: 1; /* Fade in overlay on hover */
         }
         .memory-content {
             position: relative;
             z-index: 1; /* Ensure content appears above overlay */
         }
+        .pagination{
+            margin-top:20px;
 
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+          }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+          }
+          .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+          }
+        
+        .add-memory, add-memory, [type='submit'], [type='button'] {
+            display: inline-flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            text-align: center;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            padding: 0 1rem;
+            min-height: 3.3rem;
+            font-weight: 600;
+            box-shadow: 0 4px 3px rgba(0, 0, 0, 0.1);
+            transition-property: transform;
+            transition-duration: .2s;
+            color: white;
+            background-color: var(--primary);
+            width: fit-content;
+        }
+        .add-memory:hover, add-memory:hover, [type='submit']:hover, [type='add-memory']:hover {
+            background-color: var(--primary-hover);
+        }
+        .add-memory:active, add-memory:active, [type='submit']:active, [type='add-memory']:active {
+            transform: scale(0.95);
+        }
+
+        #map {
+            height: 500px; /* Adjust height as needed */
+            width: 100%;   /* Full width */
+            position: relative;
+            overflow: hidden; /* Prevents scrollbars within the map container */
+        }
+
+        #location .location-item{
+            width: 50%;
+        }
         {% comment %} .step-links {
             display: flex;
             justify-content: center;
