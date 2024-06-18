@@ -23,10 +23,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('explorer/', include('explorer.urls')),
     path("accounts/", include("allauth.urls")),
-    path("accounts/profile/", include("user.urls"),name="profile")
-    
-    # path("auth/", include("auth_app.urls")),
-    
-    # path('',TemplateView.as_view(template_name='home.html')),
-    # path('logout', LogoutView.as_view()),
+    path("", include("user.urls"),name="profile")
 ]

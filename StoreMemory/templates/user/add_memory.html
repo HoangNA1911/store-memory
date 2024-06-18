@@ -18,7 +18,7 @@
             <input type="date" id="date" name="date" required>
         </div>
         <div class="form-group">
-            <label for="longitude">Location (Click to map to choose location)</label>
+            <label for="longitude"disabled>Location (Click to map to choose location) </label>
             <div id="map"></div>
             <div id="location" style="display: flex">
                 <div class="location-item" style="margin-right: 10px">
@@ -64,7 +64,7 @@
         console.log('Success:', data);
         alert('Memory added successfully!');
         // Optionally, you can reset the form here
-        window.location.href = '/accounts/profile';
+        window.location.href = '/';
         document.getElementById('memoryForm').reset();
 
       })

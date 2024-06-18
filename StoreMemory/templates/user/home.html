@@ -62,7 +62,9 @@
         'https://static.vecteezy.com/system/resources/thumbnails/007/162/558/small/beautiful-blue-mountain-silhouette-landscape-with-fog-and-sunrise-and-sunset-in-mountains-background-outdoor-and-hiking-concept-good-for-wallpaper-site-banner-cover-poster-free-vector.jpg',
         'https://static.vecteezy.com/system/resources/previews/007/984/440/non_2x/beautiful-river-panoramic-landscape-background-illustration-vector.jpg',
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnXo_aDcLRu9p_0djFa6vVJGcpaJHKd-VqzoKUBc9rxnDCmgpu3Pfd5ly_70BsIiGGo6w&usqp=CAU',
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8FoCRbgcs48Rb5-QzumDboX8ECWmuVUQWiEbJoemRM5dGPMaWqtXLYJwCCfgop3qJNGs&usqp=CAU'
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8FoCRbgcs48Rb5-QzumDboX8ECWmuVUQWiEbJoemRM5dGPMaWqtXLYJwCCfgop3qJNGs&usqp=CAU',
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR99VB_Bb-FBU62omJQIMTq70D6VP-ipumdGQ&s'
+        
     ];
 
     // Function to shuffle array elements (Fisher-Yates shuffle algorithm)
@@ -83,5 +85,14 @@
         cardImages[i].style.backgroundImage = 'url(' + imageUrls[i] + ')';
     }
     </script>
+{%else%}
+<div style="display: flex; width: 100%; justify-content: space-between; margin: 10px 10px;">
+    <div style="display: inline-block;">
+        <h1>Please sign in to use the service</h1>
+    </div>
+    <div style="display: inline-block;" >
+        <a href="/accounts/google/login/?process=login" class ="add-memory">Login</a>
+    </div>
+</div>
 {% endif %}
 {% endblock %} 

@@ -17,7 +17,7 @@
           <input type="text" id="date" name="date" value= "{{ memory.created_at }}" disabled required>
       </div>
       <div class="form-group">
-          <label for="longitude">Location (Click to map to update location)</label>
+          <label for="longitude"disabled>Location (Click to map to update location)</label>
           <div id="map"></div>
           <div id="location" style="display: flex">
               <div class="location-item" style="margin-right: 10px">
@@ -61,7 +61,7 @@
         .then(response => response.json())
         .then(data => {
           if (data.message) {
-            window.location.href = '/accounts/profile';
+            window.location.href = '/';
             alert('Update memory successfully');
           } else {
             alert('Failed to update memory. Please try again.');
@@ -88,7 +88,7 @@
           .then(data => {
             if (data.message) {
               // Redirect to profile page on success
-              window.location.href = '/accounts/profile';
+              window.location.href = '/';
             } else {
               alert('Failed to delete memory. Please try again.');
             }

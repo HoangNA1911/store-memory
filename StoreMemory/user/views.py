@@ -5,18 +5,26 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from allauth.socialaccount.models import SocialAccount
 
 # Create your views here.
+def getAvatarUser(request):
+    social_account = SocialAccount.objects.filter(user=request.user, provider='google').first()
+    avatar_url = social_account.get_avatar_url() if social_account else None
+    return avatar_url
+
 def profile(request):
-    title= 'Welcome to Store Memory'
     memories = list_memories(request)
-    return render(request, "user/home.html",{
-        'title': title,
-        'memories': memories})
-
-def home(request):
-    return render(request, "user/home.html")
-
+    
+    if request.user.is_authenticated:
+        avatar_url= getAvatarUser(request)
+        return render(request, "user/home.html",{
+            'memories': memories,
+            'avatar': avatar_url})
+    else:
+        return render(request, "user/home.html",{
+            'memories': memories})
+        
 def list_memories(request):
     user_id = None
     if request.user.is_authenticated:
@@ -26,14 +34,13 @@ def list_memories(request):
     else:
         return render(request, 'user/404.html') 
         
-    paginator = Paginator(list(memories_list), 5)  # Show 10 memories per page
+    paginator = Paginator(list(memories_list), 6)  # Show 10 memories per page
 
     page = request.GET.get('page') if request.GET.get('page') else 1
     
     try:
         memories = paginator.page(page)
     except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
         memories = paginator.page(1)
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
@@ -68,7 +75,9 @@ def add_memory(request):
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON.'}, status=400)
     else:
-        return render(request, 'user/add_memory.html')
+        if request.user.is_authenticated:
+            avatar_url= getAvatarUser(request)
+        return render(request, 'user/add_memory.html',{'avatar': avatar_url})
         
     
     
@@ -84,7 +93,9 @@ def memory_detail(request, pk):
         memory.save()
         return JsonResponse({'message': 'Memory updated successfully!'}, status=200)
     else:
-        return render(request, 'user/detail_memory.html',{'memory':memory})
+        if request.user.is_authenticated:
+            avatar_url= getAvatarUser(request)
+        return render(request, 'user/detail_memory.html',{'memory':memory, 'avatar':avatar_url})
 
 def edit_memory(request,pk):
     memory = get_object_or_404(Memory, pk=pk)
@@ -101,7 +112,9 @@ def edit_memory(request,pk):
         
         return JsonResponse({'message': 'Memory updated successfully!'}, status=200)
     else:
-        return render(request, 'edit_memory.html', {'memory': memory})
+        if request.user.is_authenticated:
+            avatar_url= getAvatarUser(request)
+        return render(request, 'edit_memory.html', {'memory': memory, 'avatar': avatar_url})
 
 
 def delete_memory(request,pk):

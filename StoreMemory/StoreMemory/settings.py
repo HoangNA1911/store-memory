@@ -156,10 +156,9 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 
 # LOGIN_REDIRECT_URL='login/'
-ACCOUNT_LOGOUT_REDIRECT_URL="/accounts/profile/"
+ACCOUNT_LOGOUT_REDIRECT_URL="/"
 
-
-
+LOGIN_REDIRECT_URL= "/"
 EXPLORER_CONNECTIONS = {
     'Default': 'default',  # Map your database connection alias to a name
 }
