@@ -80,7 +80,7 @@ def add_memory(request):
         return render(request, 'user/add_memory.html',{'avatar': avatar_url})
         
     
-    
+
 def memory_detail(request, pk):
     memory = get_object_or_404(Memory, pk=pk)
     if request.method == "POST":

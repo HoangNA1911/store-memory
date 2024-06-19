@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # 'django.contrib.sites',
     "user",
     'allauth',
     'allauth.account',
@@ -146,7 +145,7 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
-ACCOUNT_FORMS={
+ACCOUNT_FORMS = {
     'signup': 'StoreMemory.forms.CustomSignupForm',
 }
 
@@ -155,12 +154,12 @@ EMAIL_BACKEND="django.core.mail.backends.console.EmailBackend"
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 
-# LOGIN_REDIRECT_URL='login/'
 ACCOUNT_LOGOUT_REDIRECT_URL="/"
 
 LOGIN_REDIRECT_URL= "/"
+
 EXPLORER_CONNECTIONS = {
-    'Default': 'default',  # Map your database connection alias to a name
+    'Default': 'default',  
 }
 
-EXPLORER_DEFAULT_CONNECTION = 'default'  # Specify the default connection alias
+EXPLORER_DEFAULT_CONNECTION = 'default'  
