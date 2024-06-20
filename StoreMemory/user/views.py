@@ -7,7 +7,6 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from allauth.socialaccount.models import SocialAccount
 
-# Create your views here.
 def getAvatarUser(request):
     social_account = SocialAccount.objects.filter(user=request.user, provider='google').first()
     avatar_url = social_account.get_avatar_url() if social_account else None
